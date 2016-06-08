@@ -71,6 +71,22 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
+
+	$('[name="checkbox_double_bedded_ac[]"]').change(function()
+	{
+		if(!$(this).is(':checked'))
+		{
+			$('[name ="checkbox_double_bedded_ac[]"]').attr('disabled', false);
+		}
+	});
+		$('[name="checkbox_ac_suite[]"]').change(function()
+	{
+		if(!$(this).is(':checked'))
+		{
+			$('[name ="checkbox_ac_suite[]"]').attr('disabled', false);
+		}
+	});
+
     var double_AC_limit = $('input[name="double_AC"]').val();
     var suite_AC_limit = $('input[name="suite_AC"]').val();
 

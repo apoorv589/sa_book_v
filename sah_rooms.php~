@@ -71,10 +71,27 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
+
+	$('[name="checkbox_double_bedded_ac[]"]').change(function()
+	{
+		if(!$(this).is(':checked'))
+		{
+			$('[name ="checkbox_double_bedded_ac[]"]').attr('disabled', false);
+		}
+	});
+		$('[name="checkbox_ac_suite[]"]').change(function()
+	{
+		if(!$(this).is(':checked'))
+		{
+			$('[name ="checkbox_ac_suite[]"]').attr('disabled', false);
+		}
+	});
+
     var double_AC_limit = $('input[name="double_AC"]').val();
     var suite_AC_limit = $('input[name="suite_AC"]').val();
 
     $('.disabled').attr('disabled', true);
+
 
     if(double_AC_limit == 0) {
       $('[name ="checkbox_double_bedded_ac[]"]').attr('disabled', true);
@@ -83,14 +100,33 @@
     if(suite_AC_limit == 0) {
       $('[name ="checkbox_ac_suite[]"]').attr('disabled', true);
     }
+	//Get no. of boxes enabled .
+	var unchecked_enabled=$('input[name="checkbox_double_bedded_ac[]"]:enabled').length;
+	
+	var unchecked_enabled_suite=$('input[name="checkbox_ac_suite[]"]:enabled').length;
 
-    //using checkbox name[] as name to send the list of values of checked checkboxes
+	//Check if rooms can be allotted or not . Accordingly display the text of submit button . 	
+	if(unchecked_enabled-double_AC_limit<0 || unchecked_enabled_suite-suite_AC_limit<0)
+	{
+		
+		$('#room_alloc_button').text('Rooms Unavailable');
+		$('[name="checkbox_double_bedded_ac[]"]').attr('disabled',true);
+		$('[name="checkbox_ac_suite[]"]').attr('disabled',true);
+		$fla=1;
+	}
+	else
+	{
+		$('#room_alloc_button').text('Submit');
+	}	
+	
+   
     $('[name="floor_double_bedded_ac"]').click(function () {
       var double_AC_limit = $('input[name="double_AC"]').val();
       if ($('[name ="checkbox_double_bedded_ac[]"]:checked').length < double_AC_limit) {
-        $('[name ="checkbox_double_bedded_ac[]"]').not(":checked").attr('disabled', false);
+     //Rooms can be allotted .
       }
       else {
+	//Disable room selection if rooms can't be allotted .
         $('[name ="checkbox_double_bedded_ac[]"]').not(":checked").attr('disabled', true);
       }
       $('.disabled').attr('disabled', true);
@@ -99,9 +135,10 @@
     $('[name="floor_ac_suite"]').click(function () {
       var suite_AC_limit = $('input[name="suite_AC"]').val();
       if ($('[name ="checkbox_ac_suite[]"]:checked').length < suite_AC_limit) {
-        $('[name ="checkbox_ac_suite[]"]').not(":checked").attr('disabled', false);
+       //Rooms can be allotted .
       }
       else {
+	//Disable if rooms can't be allotted .
         $('[name ="checkbox_ac_suite[]"]').not(":checked").attr('disabled', true);
       }
       $('.disabled').attr('disabled', true);
